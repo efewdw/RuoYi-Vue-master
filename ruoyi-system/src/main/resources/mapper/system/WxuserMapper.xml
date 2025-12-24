@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.WxuserMapper">
+    
+    <resultMap type="Wxuser" id="WxuserResult">
+        <result property="id"    column="id"    />
+        <result property="openid"    column="openid"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="avatarUrl"    column="avatar_url"    />
+        <result property="sex"    column="sex"    />
+        <result property="phone"    column="phone"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="creditCode"    column="credit_code"    />
+        <result property="companyType"    column="company_type"    />
+        <result property="legalPerson"    column="legal_person"    />
+        <result property="registeredCapital"    column="registered_capital"    />
+        <result property="establishDate"    column="establish_date"    />
+        <result property="registeredAddress"    column="registered_address"    />
+        <result property="businessScope"    column="business_scope"    />
+        <result property="licenseImageUrl"    column="license_image_url"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="companyHistory"    column="company_history"    />
+        <result property="companyCertified"    column="company_certified"    />
+        <result property="personalResume"    column="personal_resume"    />
+        <result property="status"    column="status"    />
+        <result property="address"    column="address"    />
+        <result property="serviceContent"    column="service_content"    />
+    </resultMap>
+
+    <sql id="selectWxuserVo">
+        select id, openid, nickname, avatar_url, sex, phone, company_name, credit_code, company_type, legal_person, registered_capital, establish_date, registered_address, business_scope, license_image_url, category_id, company_history, company_certified, personal_resume, status, address, service_content from wxuser
+    </sql>
+
+    <select id="selectWxuserList" parameterType="Wxuser" resultMap="WxuserResult">
+        <include refid="selectWxuserVo"/>
+        <where>  
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="avatarUrl != null  and avatarUrl != ''"> and avatar_url = #{avatarUrl}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="creditCode != null  and creditCode != ''"> and credit_code = #{creditCode}</if>
+            <if test="companyType != null  and companyType != ''"> and company_type = #{companyType}</if>
+            <if test="legalPerson != null  and legalPerson != ''"> and legal_person = #{legalPerson}</if>
+            <if test="registeredCapital != null "> and registered_capital = #{registeredCapital}</if>
+            <if test="establishDate != null "> and establish_date = #{establishDate}</if>
+            <if test="registeredAddress != null  and registeredAddress != ''"> and registered_address = #{registeredAddress}</if>
+            <if test="businessScope != null  and businessScope != ''"> and business_scope = #{businessScope}</if>
+            <if test="licenseImageUrl != null  and licenseImageUrl != ''"> and license_image_url = #{licenseImageUrl}</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="companyHistory != null  and companyHistory != ''"> and company_history = #{companyHistory}</if>
+            <if test="companyCertified != null "> and company_certified = #{companyCertified}</if>
+            <if test="personalResume != null  and personalResume != ''"> and personal_resume = #{personalResume}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="serviceContent != null  and serviceContent != ''"> and service_content = #{serviceContent}</if>
+        </where>
+    </select>
+    
+    <select id="selectWxuserById" parameterType="Long" resultMap="WxuserResult">
+        <include refid="selectWxuserVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWxuser" parameterType="Wxuser" useGeneratedKeys="true" keyProperty="id">
+        insert into wxuser
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openid != null and openid != ''">openid,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="avatarUrl != null">avatar_url,</if>
+            <if test="sex != null">sex,</if>
+            <if test="phone != null">phone,</if>
+            <if test="companyName != null and companyName != ''">company_name,</if>
+            <if test="creditCode != null and creditCode != ''">credit_code,</if>
+            <if test="companyType != null">company_type,</if>
+            <if test="legalPerson != null">legal_person,</if>
+            <if test="registeredCapital != null">registered_capital,</if>
+            <if test="establishDate != null">establish_date,</if>
+            <if test="registeredAddress != null">registered_address,</if>
+            <if test="businessScope != null">business_scope,</if>
+            <if test="licenseImageUrl != null">license_image_url,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="companyHistory != null">company_history,</if>
+            <if test="companyCertified != null">company_certified,</if>
+            <if test="personalResume != null">personal_resume,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="address != null">address,</if>
+            <if test="serviceContent != null">service_content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openid != null and openid != ''">#{openid},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="avatarUrl != null">#{avatarUrl},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="companyName != null and companyName != ''">#{companyName},</if>
+            <if test="creditCode != null and creditCode != ''">#{creditCode},</if>
+            <if test="companyType != null">#{companyType},</if>
+            <if test="legalPerson != null">#{legalPerson},</if>
+            <if test="registeredCapital != null">#{registeredCapital},</if>
+            <if test="establishDate != null">#{establishDate},</if>
+            <if test="registeredAddress != null">#{registeredAddress},</if>
+            <if test="businessScope != null">#{businessScope},</if>
+            <if test="licenseImageUrl != null">#{licenseImageUrl},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="companyHistory != null">#{companyHistory},</if>
+            <if test="companyCertified != null">#{companyCertified},</if>
+            <if test="personalResume != null">#{personalResume},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="address != null">#{address},</if>
+            <if test="serviceContent != null">#{serviceContent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWxuser" parameterType="Wxuser">
+        update wxuser
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="openid != null and openid != ''">openid = #{openid},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatarUrl != null">avatar_url = #{avatarUrl},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="companyName != null and companyName != ''">company_name = #{companyName},</if>
+            <if test="creditCode != null and creditCode != ''">credit_code = #{creditCode},</if>
+            <if test="companyType != null">company_type = #{companyType},</if>
+            <if test="legalPerson != null">legal_person = #{legalPerson},</if>
+            <if test="registeredCapital != null">registered_capital = #{registeredCapital},</if>
+            <if test="establishDate != null">establish_date = #{establishDate},</if>
+            <if test="registeredAddress != null">registered_address = #{registeredAddress},</if>
+            <if test="businessScope != null">business_scope = #{businessScope},</if>
+            <if test="licenseImageUrl != null">license_image_url = #{licenseImageUrl},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="companyHistory != null">company_history = #{companyHistory},</if>
+            <if test="companyCertified != null">company_certified = #{companyCertified},</if>
+            <if test="personalResume != null">personal_resume = #{personalResume},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="serviceContent != null">service_content = #{serviceContent},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWxuserById" parameterType="Long">
+        delete from wxuser where id = #{id}
+    </delete>
+
+    <delete id="deleteWxuserByIds" parameterType="String">
+        delete from wxuser where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectWxuserByopenid" parameterType="Wxuser">
+        select * from wxuser where openid=#{openid}
+    </select>
+</mapper>

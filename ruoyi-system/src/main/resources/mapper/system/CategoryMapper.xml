@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CategoryMapper">
+    
+    <resultMap type="Category" id="CategoryResult">
+        <result property="id"    column="id"    />
+        <result property="categoryName"    column="category_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="level"    column="level"    />
+    </resultMap>
+
+    <sql id="selectCategoryVo">
+        select id, category_name, parent_id, level from category
+    </sql>
+
+    <select id="selectCategoryList" parameterType="Category" resultMap="CategoryResult">
+        <include refid="selectCategoryVo"/>
+        <where>  
+            <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="level != null "> and level = #{level}</if>
+        </where>
+    </select>
+    
+    <select id="selectCategoryById" parameterType="Long" resultMap="CategoryResult">
+        <include refid="selectCategoryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCategory" parameterType="Category" useGeneratedKeys="true" keyProperty="id">
+        insert into category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryName != null and categoryName != ''">category_name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="level != null">level,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryName != null and categoryName != ''">#{categoryName},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="level != null">#{level},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCategory" parameterType="Category">
+        update category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryName != null and categoryName != ''">category_name = #{categoryName},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="level != null">level = #{level},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCategoryById" parameterType="Long">
+        delete from category where id = #{id}
+    </delete>
+
+    <delete id="deleteCategoryByIds" parameterType="String">
+        delete from category where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <resultMap id="BaseResultMap" type="com.ruoyi.system.domain.Category">
+        <id column="id" property="id"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="level" property="level"/>
+    </resultMap>
+
+    <!-- 查询所有类别 -->
+    <select id="selectAllCategories" resultMap="BaseResultMap">
+        SELECT
+            id,
+            category_name,
+            parent_id,
+            level
+        FROM category
+        ORDER BY level ASC, parent_id ASC, id ASC
+    </select>
+
+    <!-- 根据父级ID查询子类别列表 -->
+    <select id="selectByParentId" resultMap="BaseResultMap">
+        SELECT
+            id,
+            category_name,
+            parent_id,
+            level
+        FROM category
+        WHERE parent_id = #{parentId}
+        ORDER BY id ASC
+    </select>
+
+    <!-- 根据层级查询类别列表 -->
+    <select id="selectByLevel" resultMap="BaseResultMap">
+        SELECT
+            id,
+            category_name,
+            parent_id,
+            level
+        FROM category
+        WHERE level = #{level}
+        ORDER BY id ASC
+    </select>
+
+    <!-- 根据ID查询类别 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+            id,
+            category_name,
+            parent_id,
+            level
+        FROM category
+        WHERE id = #{id}
+    </select>
+</mapper>
