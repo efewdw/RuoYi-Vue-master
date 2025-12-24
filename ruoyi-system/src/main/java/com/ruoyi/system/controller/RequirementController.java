@@ -52,17 +52,26 @@ public class RequirementController extends BaseController
         startPage();
         List<Requirement> list = requirementService.selectRequirementList(requirement);
         ArrayList<RequirementPo> requirementPos = new ArrayList<>();
-        for (Object o :list) {
-            com.ruoyi.system.domain.Requirement requirement1 =(Requirement)o;
-            RequirementPo requirementPo = new RequirementPo();
-            BeanUtils.copyProperties(requirement1,requirementPo);
-            Wxuser wxuser = wxuserMapper.selectWxuserById(requirement1.getUserId());
-            requirementPo.setNickName(wxuser.getNickname());
-            requirementPo.setPhone(wxuser.getPhone());
-            requirementPos.add(requirementPo);
+        System.out.println(list);
+        if (list.size()!=0){
+
+            for (Object o :list) {
+                com.ruoyi.system.domain.Requirement requirement1 =(Requirement)o;
+                RequirementPo requirementPo = new RequirementPo();
+                BeanUtils.copyProperties(requirement1,requirementPo);
+                Wxuser wxuser = wxuserMapper.selectWxuserById(requirement1.getUserId());
+                if (wxuser!=null){
+                    requirementPo.setNickName(wxuser.getNickname());
+                    requirementPo.setPhone(wxuser.getPhone());
+                }
+                requirementPos.add(requirementPo);
+            }
+
+            return getDataTable(requirementPos);
+        }else{
+            return getDataTable(requirementPos);
         }
 
-        return getDataTable(requirementPos);
     }
 
     /**
